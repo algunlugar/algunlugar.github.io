@@ -169,7 +169,7 @@
     let imagenes = [];
     let indice = 0;
 
-    /* Cargar automáticamente la lista de fotografías */
+    /* Cargar lista de fotografías y miniaturas */
 
     async function cargarFotografias() {
       try {
@@ -182,14 +182,22 @@
           throw new Error("No se pudo cargar fotos.json");
         }
 
-        const archivos = await respuesta.json();
+        const fotografias = await respuesta.json();
 
-        archivos.forEach((archivo, i) => {
+        fotografias.forEach((foto, i) => {
           const imagen = document.createElement("img");
 
-          imagen.src = encodeURIComponent(archivo);
+          imagen.src = foto.miniatura
+            .split("/")
+            .map(encodeURIComponent)
+            .join("/");
+
+          imagen.dataset.original =
+            encodeURIComponent(foto.original);
+
           imagen.alt = "Fotografía " + (i + 1);
           imagen.loading = "lazy";
+          imagen.decoding = "async";
 
           imagen.addEventListener("click", () => {
             mostrarImagen(i);
@@ -205,19 +213,20 @@
       }
     }
 
-    /* Mostrar fotografía ampliada */
+    /* Mostrar fotografía original ampliada */
 
     function mostrarImagen(n) {
       if (imagenes.length === 0) return;
 
       indice = (n + imagenes.length) % imagenes.length;
 
-      ampliada.src = imagenes[indice].src;
+      ampliada.src = imagenes[indice].dataset.original;
       ampliada.alt = imagenes[indice].alt;
     }
 
     function cerrarVisor() {
       visor.classList.remove("activo");
+      ampliada.removeAttribute("src");
     }
 
     document.querySelector(".cerrar")
