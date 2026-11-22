@@ -1,0 +1,68 @@
+
+name: Actualizar galería de fotos
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "fotos/**"
+      - ".github/workflows/actualizar-fotos.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Generar lista de fotografías
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          carpeta = Path("fotos")
+          extensiones = {".jpg", ".jpeg", ".png", ".webp"}
+
+          imagenes = sorted(
+              archivo.name
+              for archivo in carpeta.iterdir()
+              if archivo.is_file()
+              and archivo.suffix.lower() in extensiones
+          )
+
+          (carpeta / "fotos.json").write_text(
+              json.dumps(imagenes, ensure_ascii=False, indent=2),
+              encoding="utf-8"
+          )
+
+          print(f"Fotografías encontradas: {len(imagenes)}")
+          PY
+
+      - name: Preparar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Preparar archivos del sitio
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      - name: Publicar sitio
+        id: deployment
+        uses: actions/deploy-pages@v4
