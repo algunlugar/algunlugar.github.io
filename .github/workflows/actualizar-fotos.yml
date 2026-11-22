@@ -28,28 +28,72 @@ jobs:
       - name: Descargar repositorio
         uses: actions/checkout@v4
 
-      - name: Generar lista de fotografías
+      - name: Instalar herramientas de imágenes
+        run: |
+          python3 -m pip install Pillow
+
+      - name: Generar lista y miniaturas
         run: |
           python3 - <<'PY'
           import json
           from pathlib import Path
+          from PIL import Image, ImageOps, UnidentifiedImageError
 
           carpeta = Path("fotos")
-          extensiones = {".jpg", ".jpeg", ".png", ".webp"}
+          miniaturas = carpeta / "miniaturas"
+          miniaturas.mkdir(exist_ok=True)
 
-          imagenes = sorted(
-              archivo.name
-              for archivo in carpeta.iterdir()
-              if archivo.is_file()
-              and archivo.suffix.lower() in extensiones
-          )
+          extensiones = {".jpg", ".jpeg", ".png", ".webp"}
+          fotografias = []
+
+          for archivo in sorted(carpeta.iterdir()):
+              if not archivo.is_file():
+                  continue
+
+              if archivo.suffix.lower() not in extensiones:
+                  continue
+
+              destino = miniaturas / (archivo.name + ".jpg")
+
+              try:
+                  with Image.open(archivo) as original:
+                      imagen = ImageOps.exif_transpose(original)
+                      imagen.thumbnail((400, 400))
+
+                      if imagen.mode == "RGBA":
+                          fondo = Image.new(
+                              "RGB", imagen.size, (0, 0, 0)
+                          )
+                          fondo.paste(imagen, mask=imagen.getchannel("A"))
+                          imagen = fondo
+                      else:
+                          imagen = imagen.convert("RGB")
+
+                      imagen.save(
+                          destino,
+                          "JPEG",
+                          quality=78,
+                          optimize=True
+                      )
+
+                  fotografias.append({
+                      "original": archivo.name,
+                      "miniatura": "miniaturas/" + destino.name
+                  })
+
+              except (UnidentifiedImageError, OSError) as error:
+                  print(f"No se pudo procesar {archivo.name}: {error}")
 
           (carpeta / "fotos.json").write_text(
-              json.dumps(imagenes, ensure_ascii=False, indent=2),
+              json.dumps(
+                  fotografias,
+                  ensure_ascii=False,
+                  indent=2
+              ),
               encoding="utf-8"
           )
 
-          print(f"Fotografías encontradas: {len(imagenes)}")
+          print(f"Fotografías procesadas: {len(fotografias)}")
           PY
 
       - name: Preparar GitHub Pages
