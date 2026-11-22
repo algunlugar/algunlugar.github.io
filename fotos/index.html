@@ -3,11 +3,14 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>fotos/instantes</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       background: #d8d8d8;
@@ -26,6 +29,54 @@
       height: auto;
       margin-bottom: 12px;
       break-inside: avoid;
+      cursor: pointer;
+    }
+
+    .galeria img:hover {
+      opacity: 0.85;
+    }
+
+    .visor {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.96);
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .visor.activo {
+      display: flex;
+    }
+
+    .visor img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    .cerrar, .anterior, .siguiente {
+      position: absolute;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: Georgia, serif;
+      font-size: 28px;
+    }
+
+    .cerrar {
+      top: 20px;
+      right: 25px;
+    }
+
+    .anterior {
+      left: 20px;
+    }
+
+    .siguiente {
+      right: 20px;
     }
 
     @media (max-width: 900px) {
@@ -39,13 +90,80 @@
         column-count: 2;
         padding: 12px;
       }
+
+      .visor img {
+        max-width: 85vw;
+      }
     }
   </style>
 </head>
 
 <body>
+
   <main class="galeria">
-    <!-- Aquí aparecerán las fotografías -->
+    <img src="20150928_181843.jpg" alt="Fotografía 1">
+    <img src="20160207_172219.jpg" alt="Fotografía 2">
   </main>
+
+  <div class="visor" id="visor" role="dialog"
+       aria-modal="true" aria-label="Visor de fotografías">
+    <button class="cerrar" aria-label="Cerrar">×</button>
+    <button class="anterior" aria-label="Anterior">‹</button>
+    <img id="imagenAmpliada" src="" alt="Fotografía ampliada">
+    <button class="siguiente" aria-label="Siguiente">›</button>
+  </div>
+
+  <script>
+    const imagenes = Array.from(
+      document.querySelectorAll(".galeria img")
+    );
+
+    const visor = document.getElementById("visor");
+    const ampliada = document.getElementById("imagenAmpliada");
+    let indice = 0;
+
+    function mostrarImagen(n) {
+      indice = (n + imagenes.length) % imagenes.length;
+      ampliada.src = imagenes[indice].src;
+      ampliada.alt = imagenes[indice].alt;
+    }
+
+    imagenes.forEach((imagen, i) => {
+      imagen.addEventListener("click", () => {
+        mostrarImagen(i);
+        visor.classList.add("activo");
+      });
+    });
+
+    function cerrarVisor() {
+      visor.classList.remove("activo");
+    }
+
+    document.querySelector(".cerrar")
+      .addEventListener("click", cerrarVisor);
+
+    document.querySelector(".anterior")
+      .addEventListener("click", () => {
+        mostrarImagen(indice - 1);
+      });
+
+    document.querySelector(".siguiente")
+      .addEventListener("click", () => {
+        mostrarImagen(indice + 1);
+      });
+
+    visor.addEventListener("click", (evento) => {
+      if (evento.target === visor) cerrarVisor();
+    });
+
+    document.addEventListener("keydown", (evento) => {
+      if (!visor.classList.contains("activo")) return;
+
+      if (evento.key === "Escape") cerrarVisor();
+      if (evento.key === "ArrowLeft") mostrarImagen(indice - 1);
+      if (evento.key === "ArrowRight") mostrarImagen(indice + 1);
+    });
+  </script>
+
 </body>
 </html>
