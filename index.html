@@ -45,34 +45,45 @@
     nav {
       position: absolute;
       right: 3%;
-      top: 70%;
+      top: 61%;
       transform: translateY(-50%);
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 22px;
+      gap: 42px;
     }
 
-    nav a {
-      color: #222;
+    nav a,
+    .firma a {
+      color: #111111;
       text-decoration: none;
-      font-size: 17px;
-      line-height: 1.3;
+      font-size: 19px;
+      font-weight: normal;
+      white-space: nowrap;
     }
 
     nav a:hover,
-    nav a:focus-visible {
+    nav a:focus-visible,
+    .firma a:hover,
+    .firma a:focus-visible {
       text-decoration: underline;
+    }
+
+    .firma {
+      position: absolute;
+      right: 3%;
+      bottom: 3%;
     }
 
     @media (max-width: 600px) {
       nav {
         right: 3%;
-        gap: 14px;
+        gap: 18px;
       }
 
-      nav a {
-        font-size: clamp(10px, 2.5vw, 15px);
+      nav a,
+      .firma a {
+        font-size: clamp(9px, 2.4vw, 15px);
       }
     }
   </style>
@@ -86,11 +97,28 @@
            alt="Escalera bajo una cúpula">
 
       <nav aria-label="Secciones">
-        <a href="literatura/">literatura</a>
-        <a href="musica/">música</a>
-        <a href="fotografia/">fotografía</a>
-        <a href="autor/">autor</a>
+        <a href="literatura/">
+          textos/fragmentos
+        </a>
+
+        <a href="fotografia/">
+          fotos/instantes
+        </a>
+
+        <a href="musica/">
+          ruidos/ecos
+        </a>
+
+        <a href="autor/">
+          alguien/nadie
+        </a>
       </nav>
+
+      <div class="firma">
+        <a href="#" onclick="return false;">
+          deja tu firma
+        </a>
+      </div>
 
     </div>
   </main>
