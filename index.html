@@ -5,9 +5,83 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Algún Lugar</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: white;
+      font-family: Georgia, serif;
+    }
+
+    .portada {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contenedor {
+      position: relative;
+      width: min(100%, 1200px);
+    }
+
+    .contenedor img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    nav {
+      position: absolute;
+      right: 4%;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 24px;
+    }
+
+    nav a {
+      color: #222;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    nav a:hover,
+    nav a:focus-visible {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        right: 3%;
+        gap: 18px;
+      }
+
+      nav a {
+        font-size: 11px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Algún Lugar</h1>
-  <p>Un espacio en construcción.</p>
+  <main class="portada">
+    <div class="contenedor">
+      <img src="portada.jpg" alt="Escalera bajo una cúpula">
+
+      <nav aria-label="Secciones">
+        <a href="literatura/">Literatura</a>
+        <a href="musica/">Música</a>
+        <a href="fotografia/">Fotografía</a>
+        <a href="autor/">Autor</a>
+      </nav>
+    </div>
+  </main>
 </body>
 </html>
