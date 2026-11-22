@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+  <title>fotos/instantes</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: #d8d8d8;
+      font-family: Georgia, serif;
+    }
+
+    .galeria {
+      padding: 30px;
+      column-count: 4;
+      column-gap: 12px;
+    }
+
+    .galeria img {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-bottom: 12px;
+      break-inside: avoid;
+    }
+
+    @media (max-width: 900px) {
+      .galeria {
+        column-count: 3;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .galeria {
+        column-count: 2;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="galeria">
+    <!-- Aquí aparecerán las fotografías -->
+  </main>
+</body>
+</html>
