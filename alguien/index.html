@@ -39,7 +39,7 @@
 
     .cita {
       position: absolute;
-      top: 45%;
+      top: calc(45% - 65px);
       left: 60%;
       text-align: left;
     }
@@ -58,15 +58,14 @@
 
     .contacto {
       position: absolute;
-      bottom: 30px;
+      top: calc(45% + 95px);
       left: 60%;
       font-size: 13px;
     }
 
     @media (max-width: 600px) {
-      .regreso {
-        top: 18px;
-        left: 15px;
+      .contacto {
+        left: 40%;
       }
 
       .cita {
