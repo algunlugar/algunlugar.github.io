@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Libro de visitas | Algún Lugar</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: #000000;
+      color: #cccccc;
+      font-family: Georgia, serif;
+    }
+
+    .regreso {
+      display: inline-block;
+      margin: 24px 30px 8px;
+      color: #cccccc;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .regreso:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    main {
+      max-width: 540px;
+      margin: 70px auto 80px;
+      padding: 0 25px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: normal;
+      color: #eeeeee;
+      margin: 0 0 25px;
+    }
+
+    .introduccion {
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 35px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    textarea,
+    input {
+      display: block;
+      width: 100%;
+      background: #000000;
+      color: #eeeeee;
+      border: 1px solid #555555;
+      border-radius: 0;
+      padding: 12px;
+      font-family: Georgia, serif;
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+
+    textarea {
+      min-height: 180px;
+      line-height: 1.6;
+      resize: vertical;
+    }
+
+    textarea::placeholder {
+      color: #777777;
+    }
+
+    textarea:focus,
+    input:focus {
+      outline: none;
+      border-color: #aaaaaa;
+    }
+
+    .acciones {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    button {
+      background: #000000;
+      color: #cccccc;
+      border: 1px solid #777777;
+      border-radius: 0;
+      padding: 10px 25px;
+      font-family: Georgia, serif;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      color: #ffffff;
+      border-color: #ffffff;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    #estado {
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: 25px;
+    }
+
+    @media (max-width: 600px) {
+      .regreso {
+        margin: 18px 15px 8px;
+        font-size: 13px;
+      }
+
+      main {
+        margin: 45px auto 60px;
+        padding: 0 22px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .introduccion {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <a class="regreso" href="../">← inicio</a>
+
+  <main>
+
+    <h1>Libro de visitas</h1>
+
+    <p class="introduccion">
+      Recorremos todos, como Borges, a ciegas,
+      la Gran Biblioteca, y en ella has llegado
+      hasta aquí. Puedes dejar tu huella,
+      caminante. (Tu mensaje no será público.)
+    </p>
+
+    <form id="formulario"
+          action="https://formspree.io/f/mgakpdnj"
+          method="POST">
+
+      <label for="mensaje">Mensaje</label>
+
+      <textarea
+        id="mensaje"
+        name="message"
+        placeholder="escribe aquí..."
+        required></textarea>
+
+      <label for="correo">
+        Correo electrónico (opcional, si deseas una respuesta)
+      </label>
+
+      <input
+        id="correo"
+        type="email"
+        name="email"
+        autocomplete="email">
+
+      <input
+        type="text"
+        name="_gotcha"
+        style="display:none"
+        tabindex="-1"
+        autocomplete="off">
+
+      <div class="acciones">
+        <button id="enviar" type="submit">Enviar</button>
+      </div>
+
+    </form>
+
+    <p id="estado" role="status" aria-live="polite"></p>
+
+  </main>
+
+  <script>
+    const formulario = document.getElementById("formulario");
+    const estado = document.getElementById("estado");
+    const boton = document.getElementById("enviar");
+
+    formulario.addEventListener("submit", async (evento) => {
+      evento.preventDefault();
+
+      boton.disabled = true;
+      boton.textContent = "Enviando...";
+      estado.textContent = "";
+
+      try {
+        const respuesta = await fetch(formulario.action, {
+          method: "POST",
+          body: new FormData(formulario),
+          headers: {
+            "Accept": "application/json"
+          }
+        });
+
+        if (respuesta.ok) {
+          estado.textContent =
+            "Tu mensaje ha sido enviado.";
+          formulario.reset();
+        } else {
+          estado.textContent =
+            "No se pudo enviar el mensaje. Inténtalo de nuevo.";
+        }
+
+      } catch (error) {
+        estado.textContent =
+          "No se pudo enviar el mensaje. Comprueba tu conexión e inténtalo de nuevo.";
+
+      } finally {
+        boton.disabled = false;
+        boton.textContent = "Enviar";
+      }
+    });
+  </script>
+
+</body>
+</html>
