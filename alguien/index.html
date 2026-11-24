@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alguien/Nadie | Algún Lugar</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: #ffffff;
+      color: #000000;
+      font-family: Georgia, serif;
+    }
+
+    .pagina {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+
+    .regreso {
+      position: absolute;
+      top: 24px;
+      left: 30px;
+      color: #000000;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .regreso:hover {
+      text-decoration: underline;
+    }
+
+    .cita {
+      position: absolute;
+      top: 45%;
+      right: 8%;
+      text-align: right;
+    }
+
+    blockquote {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.8;
+      font-weight: normal;
+    }
+
+    .autor {
+      margin-top: 12px;
+      font-size: 12px;
+    }
+
+    .contacto {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .regreso {
+        top: 18px;
+        left: 15px;
+      }
+
+      .cita {
+        right: 6%;
+      }
+
+      .contacto {
+        bottom: 20px;
+        right: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="pagina">
+
+    <a class="regreso" href="../">← inicio</a>
+
+    <section class="cita">
+      <blockquote lang="en">
+        I'm Nobody! Who are you?<br>
+        Are you – Nobody – too?
+      </blockquote>
+
+      <div class="autor">Emily Dickinson</div>
+    </section>
+
+    <div class="contacto">X:</div>
+
+  </main>
+</body>
+</html>
