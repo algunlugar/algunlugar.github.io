@@ -104,33 +104,34 @@
 
     /* Adaptación a celulares */
 
-    @media (max-width: 600px) {
-      .cita {
-        top: 5%;
-        right: 3%;
-      }
+   @media (max-width: 600px) {
+  .cita {
+    top: 5%;
+    right: 3%;
+    max-width: 44%;
+  }
 
-      .cita blockquote {
-        font-size: clamp(9px, 2.4vw, 15px);
-        line-height: 1.5;
-      }
+  .cita blockquote {
+    font-size: clamp(9px, 2.4vw, 15px);
+    line-height: 1.5;
+  }
 
-      .cita .autor {
-        font-size: clamp(8px, 2vw, 13px);
-        margin-top: 7px;
-      }
+  .cita .autor {
+    font-size: clamp(7px, 1.8vw, 11px);
+    margin-top: 7px;
+    line-height: 1.5;
+  }
 
-      nav {
-        right: 3%;
-        top: 66%;
-        gap: 18px;
-      }
+  nav {
+    right: 3%;
+    top: 66%;
+    gap: 18px;
+  }
 
-      nav a,
-      .firma a {
-        font-size: clamp(9px, 2.4vw, 13px);
-      }
-    }
+  nav a, .firma a {
+    font-size: clamp(9px, 2.4vw, 13px);
+  }
+}
   </style>
 </head>
 
